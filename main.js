@@ -91,6 +91,42 @@ const material = new THREE.MeshStandardMaterial({
 const mesh = new THREE.Mesh(geometry, material);
 scene.add(mesh);
 
+const geometry2 = new THREE.SphereGeometry(3, 64, 64);
+const material2 = new THREE.MeshStandardMaterial({
+  color: "#00FF00", // Green color
+  roughness: 0.5,
+});
+const mesh2 = new THREE.Mesh(geometry2, material2);
+mesh2.position.set(-10, 0, 0); // Adjust position as desired
+scene.add(mesh2);
+
+const geometry3 = new THREE.SphereGeometry(3, 64, 64);
+const material3 = new THREE.MeshStandardMaterial({
+  color: "#0000FF", // Blue color
+  roughness: 0.5,
+});
+const mesh3 = new THREE.Mesh(geometry3, material3);
+mesh3.position.set(0, 10, 0); // Adjust position as desired
+scene.add(mesh3);
+
+const geometry4 = new THREE.SphereGeometry(3, 64, 64);
+const material4 = new THREE.MeshStandardMaterial({
+  color: "#FF00FF", // Purple color
+  roughness: 0.5,
+});
+const mesh4 = new THREE.Mesh(geometry4, material4);
+mesh4.position.set(0, -10, 0); // Adjust position as desired
+scene.add(mesh4);
+
+const geometry5 = new THREE.SphereGeometry(3, 64, 64);
+const material5 = new THREE.MeshStandardMaterial({
+  color: "#FFFF00", // Yellow color
+  roughness: 0.5,
+});
+const mesh5 = new THREE.Mesh(geometry5, material5);
+mesh5.position.set(0, 0, -10); // Adjust position as desired
+scene.add(mesh5);
+
 //Sizes
 const sizes = {
   width: window.innerWidth,
@@ -150,6 +186,10 @@ loop();
 //timeline
 const t1 = gsap.timeline({ defaults: { duration: 1 } });
 t1.fromTo(mesh.scale, { z: 0, x: 0, y: 0 }, { z: 1, x: 1, y: 1 });
+t1.fromTo(mesh2.scale, { z: 0, x: 0, y: 0 }, { z: 1, x: 1, y: 1 });
+t1.fromTo(mesh3.scale, { z: 0, x: 0, y: 0 }, { z: 1, x: 1, y: 1 });
+t1.fromTo(mesh4.scale, { z: 0, x: 0, y: 0 }, { z: 1, x: 1, y: 1 });
+t1.fromTo(mesh5.scale, { z: 0, x: 0, y: 0 }, { z: 1, x: 1, y: 1 });
 
 //mouse animation
 let mouseDown = false;
