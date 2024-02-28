@@ -86,7 +86,7 @@ const scene = new THREE.Scene();
 const geometry = new THREE.SphereGeometry(3, 64, 64);
 const material = new THREE.MeshStandardMaterial({
   color: "#FFA500",
-  roughness: 0.2,
+  roughness: 0.5,
 });
 const mesh = new THREE.Mesh(geometry, material);
 scene.add(mesh);
@@ -97,9 +97,10 @@ const sizes = {
   height: window.innerHeight,
 };
 
-//Light
+// Light
 const light = new THREE.PointLight(0xffffff, 1, 100);
-light.position.set(0, 10, 20);
+light.position.set(0, 10, 10);
+light.intensity = 1.24;
 scene.add(light);
 
 //Camera
@@ -109,7 +110,7 @@ const camera = new THREE.PerspectiveCamera(
   0.1,
   1000
 );
-camera.position.z = 10;
+camera.position.z = 20;
 scene.add(camera);
 
 //Renderer
@@ -122,6 +123,8 @@ renderer.render(scene, camera);
 //Controls
 const controls = new OrbitControls(camera, canvas);
 controls.enableDamping = true;
+controls.enableZoom = false;
+controls.enablePan = false;
 controls.autoRotate = true;
 controls.autoRotateSpeed = 20;
 
@@ -169,4 +172,15 @@ window.addEventListener("mousemove", (e) => {
       b: newColor.b,
     });
   }
+});
+
+// GSAP Tween Animation to move the sphere from left to right
+// mesh.position.set(-5, 0, 0); // Initial position of the sphere
+
+gsap.to(mesh.position, {
+  x: 5,
+  y: 0,
+  z: 5,
+  duration: 2,
+  // ease: "power2.inOut", // Easing function for smooth motion
 });
