@@ -56,6 +56,34 @@ const mesh5 = new THREE.Mesh(geometry5, material5);
 mesh5.position.set(10, 0, 0); // Adjust position as desired
 scene.add(mesh5);
 
+//spehere 6,7,8
+const geometry6 = new THREE.SphereGeometry(3, 64, 64);
+const material6 = new THREE.MeshStandardMaterial({
+  color: "#FFA500",
+  roughness: 0.5,
+  emissive: "green",
+});
+const mesh6 = new THREE.Mesh(geometry6, material6);
+scene.add(mesh6);
+
+const geometry7 = new THREE.SphereGeometry(3, 64, 64);
+const material7 = new THREE.MeshStandardMaterial({
+  color: "#FFA500",
+  roughness: 0.5,
+  emissive: "green",
+});
+const mesh7 = new THREE.Mesh(geometry7, material7);
+scene.add(mesh7);
+
+const geometry8 = new THREE.SphereGeometry(3, 64, 64);
+const material8 = new THREE.MeshStandardMaterial({
+  color: "#FFA500",
+  roughness: 0.5,
+  emissive: "green",
+});
+const mesh8 = new THREE.Mesh(geometry8, material8);
+scene.add(mesh8);
+
 //Sizes
 const sizes = {
   width: window.innerWidth,
@@ -64,14 +92,14 @@ const sizes = {
 
 // Light
 const light = new THREE.PointLight(0xffffff, 1, 100);
-light.position.set(0, 10, 10);
-light.intensity = 1.24;
-light.distance = 1000;
+// light.position.set(0, 0, 30);
+// light.intensity = 1.24;
+// light.distance = 500;
 scene.add(light);
 
 //Camera
 const camera = new THREE.PerspectiveCamera(
-  5, //fov
+  75, //fov
   sizes.width / sizes.height, //aspect
   0.1, // near
   1000 // far
@@ -81,13 +109,13 @@ scene.add(camera);
 
 //Renderer
 const canvas = document.querySelector(".webgl");
-const renderer = new THREE.WebGL1Renderer({ canvas });
+const renderer = new THREE.WebGL1Renderer({ antialias: true, canvas });
 renderer.setSize(sizes.width, sizes.height);
 renderer.setPixelRatio(2);
 renderer.render(scene, camera);
 
 //Controls
-const controls = new OrbitControls(camera, canvas);
+// const controls = new OrbitControls(camera, canvas);
 // controls.enableDamping = true;
 // controls.enableZoom = false;
 // controls.enablePan = false;
@@ -95,16 +123,16 @@ const controls = new OrbitControls(camera, canvas);
 // controls.autoRotateSpeed = 20;
 
 //Resize
-window.addEventListener("resize", () => {
-  //update sizes
-  sizes.width = window.innerWidth;
-  sizes.height = window.innerHeight;
+// window.addEventListener("resize", () => {
+//   //update sizes
+//   sizes.width = window.innerWidth;
+//   sizes.height = window.innerHeight;
 
-  //update camera
-  camera.aspect = sizes.width / sizes.height;
-  camera.updateProjectionMatrix();
-  renderer.setSize(sizes.width, sizes.height);
-});
+//   //update camera
+//   camera.aspect = sizes.width / sizes.height;
+//   camera.updateProjectionMatrix();
+//   renderer.setSize(sizes.width, sizes.height);
+// });
 
 const loop = () => {
   // controls.update();
@@ -114,33 +142,16 @@ const loop = () => {
 loop();
 
 let pivot = new THREE.Object3D();
-// pivot.position.set(0, 0, 0);
-pivot.add(mesh2, mesh3, mesh4, mesh5);
+pivot.add(mesh, mesh2, mesh3, mesh4, mesh5, mesh6, mesh7, mesh8);
 scene.add(pivot);
 
-// mesh2.position.x = 0;
-// mesh2.position.y = 20;
-
-// mesh3.position.x = 0;
-// mesh3.position.y = 20;
-
-// mesh4.position.x = 0;
-// mesh4.position.y = 20;
-
-// mesh5.position.x = 0;
-// mesh5.position.y = 20;
+pivot.position.z = 10;
 
 //timeline
-const t1 = gsap.timeline({ defaults: { duration: 5 } });
-//from far to near
+const t1 = gsap.timeline({ defaults: { duration: 3 } });
 // t1.fromTo(mesh.scale, { z: 0, x: 0, y: 0 }, { z: 1, x: 1, y: 1 });
-// t1.fromTo(
-//   mesh.scale,
-//   { z: 0, x: 0, y: 0 },
-//   { z: 1, x: 1, y: 1, ease: "bounce.out" }
-// );
-
 // Then, animate the sphere to move to its final position at the back
+// t1.to([pivot.position], { z: 30 });
 t1.to(
   [
     mesh.position,
@@ -148,82 +159,30 @@ t1.to(
     mesh3.position,
     mesh4.position,
     mesh5.position,
+    mesh6.position,
+    mesh7.position,
+    mesh8.position,
   ],
-  { z: -300 }
+  { z: -10 }
 );
 
+//move the sphere to a position
+t1.to(mesh.position, { x: -8, y: 8, duration: 1 });
+t1.fromTo(
+  mesh6.position,
+  { x: -18, y: -18, duration: 1 },
+  { x: 8, y: 8, duration: 1 }
+);
+t1.fromTo(
+  mesh7.position,
+  { x: -18, y: -18, duration: 1 },
+  { x: 8, y: -8, duration: 1 }
+);
+t1.fromTo(
+  mesh8.position,
+  { x: -18, y: -18, duration: 1 },
+  { x: -8, y: -8, duration: 1 }
+);
+
+//rotate the sphere
 t1.to(pivot.rotation, { duration: 5, z: -10 });
-
-// After the spheres reach their final position, start the rotation
-// t1.add(() => {
-//   let angle = 0;
-//   const rotateSpheres = () => {
-//     angle += 0.01;
-//     const radius = 10;
-
-//     // Update positions of all spheres based on angle
-//     // const x = radius * Math.cos(angle);
-//     const z = radius * Math.sin(angle);
-//     // mesh.position.x = x;
-//     mesh.position.z = z;
-
-//     // mesh2.position.x = -x;
-//     mesh2.position.z = -z;
-
-//     // mesh3.position.x = -z;
-//     mesh3.position.z = x;
-
-//     // mesh4.position.x = z;
-//     mesh4.position.z = -x;
-
-//     // mesh5.position.x = -z;
-//     mesh5.position.z = -x;
-
-//     // Rotate all spheres around their own axis
-//     // mesh.rotation.x += 0.01;
-//     mesh.rotation.z += 0.01;
-//     // mesh2.rotation.x += 0.01;
-//     mesh2.rotation.z += 0.01;
-//     // mesh3.rotation.x += 0.01;
-//     mesh3.rotation.z += 0.01;
-//     // mesh4.rotation.x += 0.01;
-//     mesh4.rotation.z += 0.01;
-//     // mesh5.rotation.x += 0.01;
-//     mesh5.rotation.z += 0.01;
-
-//     // Call the function recursively
-//     requestAnimationFrame(rotateSpheres);
-//   };
-
-//   // Start the rotation
-//   rotateSpheres();
-// });
-// t1.fromTo(mesh2.scale, { z: 0, x: 0, y: 0 }, { z: 1, x: 1, y: 1 });
-// t1.fromTo(mesh3.scale, { z: 0, x: 0, y: 0 }, { z: 1, x: 1, y: 1 });
-// t1.fromTo(mesh4.scale, { z: 0, x: 0, y: 0 }, { z: 1, x: 1, y: 1 });
-// t1.fromTo(mesh5.scale, { z: 0, x: 0, y: 0 }, { z: 1, x: 1, y: 1 });
-
-//mouse animation
-// let mouseDown = false;
-// let rgb = [];
-// window.addEventListener("mousedown", () => (mouseDown = true));
-// window.addEventListener("mouseup", () => (mouseDown = false));
-
-// window.addEventListener("mousemove", (e) => {
-//   if (mouseDown) {
-//     rgb = [
-//       Math.round((e.pageX / sizes.width) * 255),
-//       Math.round((e.pageY / sizes.height) * 255),
-//       150,
-//     ];
-
-//     let newColor = new THREE.Color(`rgb(${rgb.join(",")})`);
-//     gsap.to(mesh.material.color, {
-//       r: newColor.r,
-//       g: newColor.g,
-//       b: newColor.b,
-//     });
-//   }
-// });
-
-console.log(mesh, mesh2, mesh3, mesh4, mesh5);
