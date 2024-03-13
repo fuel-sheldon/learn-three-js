@@ -6,7 +6,7 @@ import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 //Scene
 const scene = new THREE.Scene();
 
-//Create our sphere
+//Create sphere
 const geometry = new THREE.SphereGeometry(3, 64, 64);
 const material = new THREE.MeshStandardMaterial({
   color: "#FFA500",
@@ -23,7 +23,6 @@ const material2 = new THREE.MeshStandardMaterial({
   emissive: "green",
 });
 const mesh2 = new THREE.Mesh(geometry2, material2);
-mesh2.position.set(-10, 0, 0); // Adjust position as desired
 scene.add(mesh2);
 
 const geometry3 = new THREE.SphereGeometry(3, 64, 64);
@@ -33,7 +32,6 @@ const material3 = new THREE.MeshStandardMaterial({
   emissive: "green",
 });
 const mesh3 = new THREE.Mesh(geometry3, material3);
-mesh3.position.set(0, 10, 0); // Adjust position as desired
 scene.add(mesh3);
 
 const geometry4 = new THREE.SphereGeometry(3, 64, 64);
@@ -43,7 +41,6 @@ const material4 = new THREE.MeshStandardMaterial({
   emissive: "green",
 });
 const mesh4 = new THREE.Mesh(geometry4, material4);
-mesh4.position.set(0, -10, 0); // Adjust position as desired
 scene.add(mesh4);
 
 const geometry5 = new THREE.SphereGeometry(3, 64, 64);
@@ -53,10 +50,8 @@ const material5 = new THREE.MeshStandardMaterial({
   emissive: "green",
 });
 const mesh5 = new THREE.Mesh(geometry5, material5);
-mesh5.position.set(10, 0, 0); // Adjust position as desired
 scene.add(mesh5);
 
-//spehere 6,7,8
 const geometry6 = new THREE.SphereGeometry(3, 64, 64);
 const material6 = new THREE.MeshStandardMaterial({
   color: "#FFA500",
@@ -84,6 +79,15 @@ const material8 = new THREE.MeshStandardMaterial({
 const mesh8 = new THREE.Mesh(geometry8, material8);
 scene.add(mesh8);
 
+let sphereArray = [mesh, mesh2, mesh3, mesh4, mesh5, mesh6, mesh7, mesh8];
+
+//sphere position
+mesh.position.set(0, 0, 0);
+mesh2.position.set(-8, 8, 0);
+mesh3.position.set(8, 8, 0);
+mesh4.position.set(8, -8, 0);
+mesh5.position.set(-8, -8, 0);
+
 //Sizes
 const sizes = {
   width: window.innerWidth,
@@ -99,7 +103,7 @@ scene.add(light);
 
 //Camera
 const camera = new THREE.PerspectiveCamera(
-  75, //fov
+  65, //fov
   sizes.width / sizes.height, //aspect
   0.1, // near
   1000 // far
@@ -111,7 +115,8 @@ scene.add(camera);
 const canvas = document.querySelector(".webgl");
 const renderer = new THREE.WebGL1Renderer({ antialias: true, canvas });
 renderer.setSize(sizes.width, sizes.height);
-renderer.setPixelRatio(2);
+// renderer.setPixelRatio(2);
+
 renderer.render(scene, camera);
 
 //Controls
@@ -148,10 +153,7 @@ scene.add(pivot);
 pivot.position.z = 10;
 
 //timeline
-const t1 = gsap.timeline({ defaults: { duration: 3 } });
-// t1.fromTo(mesh.scale, { z: 0, x: 0, y: 0 }, { z: 1, x: 1, y: 1 });
-// Then, animate the sphere to move to its final position at the back
-// t1.to([pivot.position], { z: 30 });
+const t1 = gsap.timeline({ defaults: { duration: 3 }, ease: "power2.inOut" });
 t1.to(
   [
     mesh.position,
@@ -167,22 +169,42 @@ t1.to(
 );
 
 //move the sphere to a position
-t1.to(mesh.position, { x: -8, y: 8, duration: 1 });
+t1.fromTo(mesh2.position, { x: -8, y: 8 }, { x: -10, y: 1, duration: 1 });
+t1.to(mesh.position, { x: -7, y: 10, duration: 1 }, "<");
+t1.to(mesh3.position, { x: 2, y: 12, duration: 1 }, "<");
+t1.to(mesh4.position, { x: 1, y: -10, duration: 1 }, "<");
+
 t1.fromTo(
   mesh6.position,
-  { x: -18, y: -18, duration: 1 },
-  { x: 8, y: 8, duration: 1 }
+  { x: 18, y: 30, duration: 1 },
+  { x: 11, y: 10, duration: 1 },
+  "<"
 );
 t1.fromTo(
   mesh7.position,
-  { x: -18, y: -18, duration: 1 },
-  { x: 8, y: -8, duration: 1 }
+  { x: 20, y: -30, duration: 1 },
+  { x: 10, y: -8, duration: 1 },
+  "<"
 );
 t1.fromTo(
   mesh8.position,
-  { x: -18, y: -18, duration: 1 },
-  { x: -8, y: -8, duration: 1 }
+  { x: 20, y: 30, duration: 1 },
+  { x: 12, y: 1, duration: 1 },
+  "<"
 );
 
 //rotate the sphere
-t1.to(pivot.rotation, { duration: 5, z: -10 });
+t1.to(pivot.rotation, { duration: 10, z: -10 });
+
+//after the rotation will do??
+// t1.to(mesh4.position, { x: 10, y: -20, duration: 1 });
+
+function setXFromCenter(totalSpheres, sphereNumber, distance) {
+  return Math.sin(Math.PI * 2 * (sphereNumber / totalSpheres)) * distance;
+}
+function setYFromCenter(totalSpheres, sphereNumber, distance) {
+  return Math.cos(Math.PI * 2 * (sphereNumber / totalSpheres)) * distance;
+}
+
+let sphereArraySmall = sphereArray.slice(3);
+let sphereArrayRemain = sphereArray.slice(0, 3);
