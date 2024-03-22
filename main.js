@@ -5,6 +5,7 @@ import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 
 //Scene
 const scene = new THREE.Scene();
+// scene.background = new THREE.Color("#2a6c68");
 
 //Sizes
 const sizes = {
@@ -18,12 +19,12 @@ scene.add(light);
 
 //Camera
 const camera = new THREE.PerspectiveCamera(
-  70, //fov
+  40, //fov
   sizes.width / sizes.height, //aspect
   0.1, // near
   1000 // far
 );
-camera.position.z = 20;
+camera.position.z = 40;
 scene.add(camera);
 
 //Renderer
@@ -99,13 +100,12 @@ t1.from(gsapPivot.position, {
   z: 70,
 })
   .from(Sphere_0.position, { duration: 1, x: 0, y: 0 })
-  // .from(Sphere_1.position, { duration: 1, x: 50, y: -50 })
+
   .from(Sphere_2.position, { duration: 1, x: 50, y: -50 }, "<")
-  // .from(Sphere_3.position, { duration: 1, x: 50, y: -50 })
+
   .from(Sphere_4.position, { duration: 1, x: 50, y: -50 }, "<")
-  // .from(Sphere_5.position, { duration: 1, x: 50, y: -50 })
+
   .from(Sphere_6.position, { duration: 1, x: 50, y: -50 }, "<")
-  // .from(Sphere_7.position, { duration: 1, x: 50, y: -50 });
 
   // first rotate
   .to(gsapPivot.rotation, { duration: 10, z: -(Math.PI * 2) });
@@ -166,6 +166,22 @@ sphereArrayRemainder.forEach((spheres, i) => {
     "<"
   );
 });
+
+t1.to(gsapPivot.rotation, { duration: 10, z: -30 });
+
+//leave the circle
+// t1.to(gsapPivot.rotation, { duration: 5, z: -(Math.PI * 2) * 3 - 0.5 });
+
+t1.to(Sphere_4.position, { duration: 5, x: -2, y: -15 }); //top right
+t1.to(Sphere_3.position, { duration: 5, x: 6, y: -8 }, "<"); //middle single one
+t1.to(Sphere_7.position, { duration: 5, x: 12, y: 2 }, "<"); // top left
+// t1.to(Sphere_6.position, { duration: 5, x: -10, y: 5 }); // bottom left
+t1.to(Sphere_5.position, { duration: 5, x: -10, y: -10 }, "<"); //bottom right
+// 6  up
+//5
+//4
+//3
+//7
 
 // Resize
 window.addEventListener("resize", () => {
