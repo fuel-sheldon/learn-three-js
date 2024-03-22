@@ -6,21 +6,6 @@ import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 //Scene
 const scene = new THREE.Scene();
 
-//Create spheres
-// const sphereCount = 8;
-// const sphereArray = [];
-
-// for (let i = 0; i < sphereCount; i++) {
-
-//   const material = new THREE.MeshStandardMaterial({
-//     color: "#FFA500",
-//     roughness: 0.5,
-//     emissive: "green",
-//   });
-//   const mesh = new THREE.Mesh(geometry, material);
-//   scene.add(mesh);
-//   sphereArray.push(mesh);
-// }
 //Sizes
 const sizes = {
   width: window.innerWidth,
@@ -33,12 +18,12 @@ scene.add(light);
 
 //Camera
 const camera = new THREE.PerspectiveCamera(
-  65, //fov
+  70, //fov
   sizes.width / sizes.height, //aspect
   0.1, // near
   1000 // far
 );
-camera.position.z = 50;
+camera.position.z = 20;
 scene.add(camera);
 
 //Renderer
@@ -103,70 +88,8 @@ spheresArray.forEach((sphere, i) => {
 
 scene.add(gsapPivot);
 
-// const gapDistance = 10; // Adjust this value to change the gap between spheres
-
-//Set positions for each sphere with consistent gaps
-// sphereArray.forEach((sphere, index) => {
-//   const x = setXFromCenter(sphereArray.length, index, gapDistance);
-//   const y = setYFromCenter(sphereArray.length, index, gapDistance);
-//   sphere.position.set(x, y, 0);
-// });
-
-// sphereArray[0].position.set(
-//   setXFromCenter(8, 0, gapDistance),
-//   setYFromCenter(8, 0, gapDistance),
-//   0
-// );
-// sphereArray[1].position.set(
-//   setXFromCenter(8, 1, gapDistance),
-//   setYFromCenter(8, 1, gapDistance),
-//   0
-// );
-// sphereArray[2].position.set(
-//   setXFromCenter(8, 2, gapDistance),
-//   setYFromCenter(8, 2, gapDistance),
-//   0
-// );
-// sphereArray[3].position.set(
-//   setXFromCenter(8, 3, gapDistance),
-//   setYFromCenter(8, 3, gapDistance),
-//   0
-// );
-// sphereArray[4].position.set(
-//   setXFromCenter(8, 4, gapDistance),
-//   setYFromCenter(8, 4, gapDistance),
-//   0
-// );
-// sphereArray[5].position.set(
-//   setXFromCenter(8, 5, gapDistance),
-//   setYFromCenter(8, 5, gapDistance),
-//   0
-// );
-// sphereArray[6].position.set(
-//   setXFromCenter(8, 6, gapDistance),
-//   setYFromCenter(8, 6, gapDistance),
-//   0
-// );
-// sphereArray[7].position.set(
-//   setXFromCenter(8, 7, gapDistance),
-//   setYFromCenter(8, 7, gapDistance),
-//   0
-// );
-// console.log(sphereArray);
-
 //Controls
 const controls = new OrbitControls(camera, canvas);
-// controls.enableDamping = true;
-// controls.enableZoom = false;
-// controls.enablePan = false;
-// controls.autoRotate = true;
-// controls.autoRotateSpeed = 20;
-
-// const pivot = new THREE.Object3D();
-// pivot.add(...sphereArray);
-// scene.add(pivot);
-
-// pivot.position.z = 10;
 
 //timeline
 const t1 = gsap.timeline();
@@ -198,7 +121,9 @@ spheresArray.forEach((spheres, i) => {
   let options1 = i + 8;
   let options2 = i - 5;
 
-  let distanceAwayFromCenter = 30 - options2 * 10;
+  // let distanceAwayFromCenter = 30 - options2 * 10;
+  let distanceAwayFromCenter = 80 - i * 10;
+
   t1.to(
     spheres.position,
     {
@@ -209,65 +134,38 @@ spheresArray.forEach((spheres, i) => {
     "<"
   );
 });
-//move the sphere to show only five,means remove the sphere 2,4,6
-// t1.from(sphereArray[2].position, { x: 100, y: 0, z: -10 }); //right hand side
-// t1.from(sphereArray[4].position, { x: 0, y: -100, z: -10 }); // middle bottom
-// t1.from(sphereArray[6].position, { x: 100, y: 0, z: -10 }); //left hand side
-// t1.from(sphereArray[0].position, { x: 0, y: 0, z: 0 });
-// Move the sphere group to their initial positions
-// t1.to(sphereGroup.position, { x: 0, y: 0, z: -10 });
 
-//set the 5 sphere init pos
-// t1.fromTo(
-//   sphereArray[0].position,
-//   { x: 0, y: 0, z: 10 },
-//   { z: -10, duration: 2 },
-//   "<"
-// );
-// t1.to(sphereArray[1].position, { x: 7, y: 7, z: -10, duration: 2 }, "<");
-// t1.to(sphereArray[3].position, { x: 7, y: -7, z: -10, duration: 2 }, "<");
-// t1.to(sphereArray[5].position, { x: -7, y: -7, z: -10, duration: 2 }, "<");
-// t1.to(sphereArray[7].position, { x: -7, y: 7, z: -10, duration: 2 }, "<");
+//third rotation
+// let sphereArraySmaller = spheresArray.slice(totalSpheres - 8, totalSpheres - 7);
+// let sphereArrayRemainder = spheresArray.slice(totalSpheres - 2);
+let sphereArraySmaller = spheresArray.slice(3);
+let sphereArrayRemainder = spheresArray.slice(0, 3);
 
-//move the sphere into circle rotation
-// t1.to(sphereArray[7].position, { x: -10, y: 0, duration: 1 }); // [3]bottom right [5]left bottom
-// t1.to(sphereArray[0].position, { x: -7, y: 7, duration: 1 }, "<"); // move [0] to top left
-// t1.to(sphereArray[1].position, { x: 0, y: 10, duration: 1 }, "<"); // move [1] to [0] position
-// t1.to(sphereArray[4].position, { x: 0, y: -10, duration: 1 }, "<"); // move [4] back to ori middle bottom
-// t1.to(sphereArray[2].position, { x: 7, y: 7, duration: 1 }, "<");
-// t1.to(sphereArray[6].position, { x: 10, y: 0, duration: 1 }, "<");
+t1.to(gsapPivot.rotation, { duration: 5, z: -(Math.PI * 2) * 3 });
 
-// Rotate the sphere
-// t1.to(pivot.rotation, {
-//   duration: 10,
-//   z: -2,
-//   onComplete: startSphereAnimations,
-// });
-// t1.to(
-//   pivot.rotation,
-//   { duration: 20, x: -0, y: 0.5, z: -(Math.PI * 2) * 2 },
-//   "<"
-// );
-
-// t1.delay(10);
-
-// function startSphereAnimations() {
-//   // t1.to(pivot.rotation, {
-//   //   duration: 10,
-//   //   z: -2,
-//   // });
-//   sphereArray.forEach((gsapSphere, i) => {
-//     t1.to(
-//       gsapSphere.position,
-//       {
-//         duration: 10,
-//         x: setXFromCenter(8, i, 20),
-//         y: setYFromCenter(8, i, 20),
-//       },
-//       "<"
-//     );
-//   });
-// }
+t1.to(gsapPivot.position, { duration: 10, x: 0, y: 0 }, "<");
+sphereArraySmaller.forEach((spheres, i) => {
+  t1.to(
+    spheres.position,
+    {
+      duration: 5,
+      x: setXFromCenter(5, i + 1, 6),
+      y: setYFromCenter(5, i + 1, 6),
+    },
+    "<"
+  );
+});
+sphereArrayRemainder.forEach((spheres, i) => {
+  t1.to(
+    spheres.position,
+    {
+      duration: 5,
+      x: setXFromCenter(8, i + 1, 2000),
+      y: setXFromCenter(8, i + 1, 1000),
+    },
+    "<"
+  );
+});
 
 // Resize
 window.addEventListener("resize", () => {
